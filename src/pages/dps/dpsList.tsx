@@ -62,7 +62,7 @@ const DpsList = () => {
                 type="button"
                 className="btn btn-outline-primary btn-fw"
                 style={{ marginLeft: '8px' }}
-                href={`${process.env.REACT_APP_BASE_API_URL}/dps/${v}/pdf`}
+                href={`${process.env.REACT_APP_BASE_API_URL}/calf/${v}/pdf`}
               >
                 <Icon
                   size={0.7}

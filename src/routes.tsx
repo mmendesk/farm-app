@@ -3,14 +3,15 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import LoggedDash from './master-page/Logged';
 import { EditUser, ListUsers, Login, NewUser, NotFound } from './pages';
-import TelesubscriptionsList from './pages/telesubscription/telesubscriptionsList';
-import TelesubscriptionDetail from './pages/telesubscription/telesubscriptionDetail';
 
 import DpsDetail from './pages/dps/detail';
 
 import DpsList from './pages/dps/dpsList';
 import ReproductionList from './pages/reproduction/reproList';
 import NewCalf from './pages/dps/new';
+import NewMedicine from './pages/telesubscription/new';
+import NewReproduction from './pages/reproduction/new';
+import MedicineList from './pages/telesubscription/telesubscriptionsList';
 
 const LoggedDashRoutes = (props: any) => {
   const { component: Component, ...rest } = props;
@@ -41,19 +42,20 @@ const Routes = () => (
       <LoggedDashRoutes exact path="/animal/novo" component={NewCalf} />
       <LoggedDashRoutes
         exact
+        path="/medicamento/novo"
+        component={NewMedicine}
+      />
+      <LoggedDashRoutes
+        exact
+        path="/reproducao/novo"
+        component={NewReproduction}
+      />
+      <LoggedDashRoutes
+        exact
         path="/usuarios/:_id/editar"
         component={EditUser}
       />
-      <LoggedDashRoutes
-        exact
-        path="/medicines"
-        component={TelesubscriptionsList}
-      />
-      <LoggedDashRoutes
-        exact
-        path="/telesubscription/:_id"
-        component={TelesubscriptionDetail}
-      />
+      <LoggedDashRoutes exact path="/medicines" component={MedicineList} />
       <LoggedDashRoutes
         exact
         path="/reproduction"

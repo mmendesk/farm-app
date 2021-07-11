@@ -3,13 +3,12 @@ import { request } from '../../services/request';
 import { useHistory } from 'react-router-dom';
 import { Table } from '../../components/form';
 import moment from 'moment';
-import { statusTranslater } from '../../utils/utilsFunction';
 
 import { mdiEye } from '@mdi/js';
 import Icon from '@mdi/react';
 
-const TelesubscriptionsList = () => {
-  const [telesubscritions, setTelesubscritions] = useState([{}]);
+const MedicineList = () => {
+  const [medicine, setMedicine] = useState([{}]);
   const history = useHistory();
   const columns = [
     {
@@ -19,6 +18,14 @@ const TelesubscriptionsList = () => {
     {
       name: 'remedy',
       label: 'Vacina',
+    },
+    {
+      name: 'vermifuge',
+      label: 'Vermífugo',
+    },
+    {
+      name: 'supplementation',
+      label: 'Suplementação',
     },
     {
       name: 'remedyId',
@@ -57,21 +64,26 @@ const TelesubscriptionsList = () => {
     let response = await request({
       showSuccessMessage: false,
       method: 'GET',
-      path: 'telesubscription',
+      path: 'medicine/all',
     });
+
     if (response && !response.error) {
       let dataToTable = [];
-      for (const tele of response) {
+      for (const medicineData of response) {
         let data = {
-          _id: tele._id,
-          name: tele.patient.name,
-          email: tele.patient.email,
-          status: statusTranslater(tele.status),
-          createdAt: moment(tele.createdAt).format('DD/MM/YYYY'),
+          earringId: medicineData.medicine.earringId,
+          vermifuge: medicineData.medicine.vermifuge,
+          supplementation: medicineData.medicine.supplementation,
+          remedy: medicineData.medicine.remedy,
+          remedyId: medicineData.medicine.remedyId,
+          date: moment(medicineData.medicine.date).format('DD/MM/YYYY'),
+          dateValidate: moment(medicineData.medicine.dateValidate).format(
+            'DD/MM/YYYY',
+          ),
         };
         dataToTable.push(data);
       }
-      setTelesubscritions(dataToTable);
+      setMedicine(dataToTable);
     }
   }
 
@@ -84,12 +96,15 @@ const TelesubscriptionsList = () => {
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
+            <button
+              type="button"
+              className="btn btn-sm btn-primary float-right"
+              onClick={e => history.push(`medicamento/novo`)}
+            >
+              Nova Aplicação
+            </button>
             <div className="table-responsive">
-              <Table
-                title="Telesubscrições"
-                data={telesubscritions}
-                columns={columns}
-              />
+              <Table title="Medicamentos" data={medicine} columns={columns} />
             </div>
           </div>
         </div>
@@ -98,4 +113,4 @@ const TelesubscriptionsList = () => {
   );
 };
 
-export default TelesubscriptionsList;
+export default MedicineList;

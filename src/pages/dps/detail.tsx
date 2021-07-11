@@ -3,7 +3,6 @@ import { request } from '../../services/request';
 import { useParams } from 'react-router-dom';
 import PatientSideContent from '../../components/patient/patientSideContent';
 import { sex, status } from '../../types';
-import { parse } from 'url';
 
 interface IPatientDTO {
   _id: string;

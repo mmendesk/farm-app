@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom';
 import { Table } from '../../components/form';
 import { mdiEye, mdiFileDocumentMultipleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import moment from 'moment';
 
 const ReproductionList = () => {
-  const [calf, setCalf] = useState([{}]);
+  const [reproduction, setRepro] = useState([{}]);
   const history = useHistory();
   const columns = [
     {
@@ -22,8 +23,12 @@ const ReproductionList = () => {
       label: 'Suplementação',
     },
     {
-      name: 'date',
-      label: 'Data da Ovulação',
+      name: 'insemination',
+      label: 'Inseminação',
+    },
+    {
+      name: 'ride',
+      label: 'Monta',
     },
     {
       name: 'winDate',
@@ -64,29 +69,36 @@ const ReproductionList = () => {
     },
   ];
 
-  async function getCalf() {
+  async function getReproduction() {
     let response = await request({
       showSuccessMessage: false,
       method: 'GET',
-      path: 'calfs',
+      path: 'reproduction/all',
     });
-    // if (response && !response.error) {
-    //   let dataToTable = [];
-    //   for (const calfData of response) {
-    //     let data = {
-    //       earringId: calfData.calf.earringId,
-    //       weight: calfData.calf.weight,
-    //       date: moment(calfData.calf.date.split('T')[0]).format('DD/MM/YYYY'),
-    //     };
-    //     dataToTable.push(data);
-    //   }
-    //   setCalf(dataToTable);
-    // }
+
+    if (response && !response.error) {
+      let dataToTable = [];
+      for (const reproductionData of response) {
+        console.log(reproductionData);
+        let data = {
+          earringId: reproductionData.repros.earringId,
+          vermifuge: reproductionData.repros.vermifuge,
+          supplementation: reproductionData.repros.supplementation,
+          insemination: moment(reproductionData.repros.insemination).format(
+            'DD/MM/YYYY',
+          ),
+          ride: moment(reproductionData.repros.ride).format('DD/MM/YYYY'),
+          winDate: moment(reproductionData.repros.winDate).format('DD/MM/YYYY'),
+        };
+        dataToTable.push(data);
+      }
+      setRepro(dataToTable);
+    }
   }
 
   useEffect(() => {
-    getCalf();
-  }, []);
+    getReproduction();
+  }, []); //eslint-disable-line
 
   return (
     <div className="row">
@@ -96,12 +108,12 @@ const ReproductionList = () => {
             <button
               type="button"
               className="btn btn-sm btn-primary float-right"
-              onClick={e => history.push(`usuarios/novo`)}
+              onClick={e => history.push(`reproducao/novo`)}
             >
-              Novo Animal
+              Nova Reprodução
             </button>
             <div className="table-responsive">
-              <Table title="Reprodução" data={calf} columns={columns} />
+              <Table title="Reprodução" data={reproduction} columns={columns} />
             </div>
           </div>
         </div>
